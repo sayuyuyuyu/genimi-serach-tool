@@ -134,6 +134,68 @@ Content-Type: application/json
 
 ---
 
+## MCPサーバーの導入方法
+
+### VS Code での導入
+
+1. MCPサーバーを起動:
+   ```powershell
+   .venv\Scripts\Activate.ps1
+   python server.py
+   ```
+
+2. VS Codeで設定を開く: `Ctrl+,` (Windows/Linux) または `Cmd+,` (Mac)
+
+3. 検索ボックスに「MCP」を入力
+
+4. 「Tool Providers」セクションで「Add Item」をクリック
+
+5. 以下の設定を追加:
+   ```json
+   {
+     "name": "gemini-grounding-search",
+     "command": "${workspaceFolder}/.venv/Scripts/python",
+     "args": ["${workspaceFolder}/server.py"]
+   }
+   ```
+
+6. VS Codeを再起動
+
+7. AIアシスタントで利用:
+   ```
+   @web_search クエリ文字列
+   ```
+
+### Cursor での導入
+
+1. MCPサーバーを起動:
+   ```powershell
+   .venv\Scripts\Activate.ps1
+   python server.py
+   ```
+
+2. Cursorの設定を開く: `Ctrl+,` (Windows/Linux) または `Cmd+,` (Mac)
+
+3. 左メニューから「AI」を選択
+
+4. 「MCP Tool Provider」セクションで「Add Tool Provider」をクリック
+
+5. 以下を入力:
+   - Name: `gemini-grounding-search`
+   - Command: アブソリュートパスで python.exe を指定
+     例: `C:\Users\username\project\.venv\Scripts\python.exe`
+   - Args: アブソリュートパスで server.py を指定
+     例: `C:\Users\username\project\server.py`
+
+6. Cursorを再起動
+
+7. AIアシスタントで利用:
+   ```
+   @web_search クエリ文字列
+   ```
+
+---
+
 ## トラブルシューティング
 
 | 症状 | 原因と対処 |
@@ -142,6 +204,7 @@ Content-Type: application/json
 | `KeyError: 'GEMINI_API_KEY'` | `.env` でキー名を **GEMINI_API_KEY** にしているか |
 | 引用リンクが付かない | `MODEL_ID` が 2.x 系か確認／`types.Tool(google_search=…)` を渡しているか |
 | MCP からツールが見えない | `@mcp.tool()` デコレータ忘れ／サーバー再起動忘れ |
+| VS Code/Cursorで接続できない | パスが正しいか確認／server.py が "stdio" モードになっているか |
 
 ---
 
